@@ -1,10 +1,15 @@
-import {neon} from "@neondatabase/serverless"
+import { neon } from "@neondatabase/serverless";
+import dotenv from "dotenv";
 
-import "dotenv/config";
+dotenv.config();
 
-//Creates a SQL connection using our DB URL
-export const sql=neon(process.env.DATABASE_URL)
+if (!process.env.DATABASE_URL) {
+  console.error("❌ DATABASE_URL is missing!");
+  process.exit(1);
+}
 
+// create a Neon client using the remote DATABASE_URL
+export const sql = neon(process.env.DATABASE_URL);
 
 export async function initDB() {
   try {
@@ -18,9 +23,10 @@ export async function initDB() {
         created_at DATE NOT NULL DEFAULT CURRENT_DATE
       );
     `;
-    console.log("Database initialized successfully");
+    console.log("✅ Database initialized successfully");
   } catch (error) {
-    console.error("Error initializing DB", error);
-    process.exit(1);
+    console.error("❌ Error initializing DB:", error.message);
+    console.error("Full error:", error);
+    // don’t exit here on Render; just log the failure
   }
 }
