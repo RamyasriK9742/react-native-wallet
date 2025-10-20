@@ -7,6 +7,9 @@ import job from "./src/config/cron.js";
 
 dotenv.config();
 
+// ✅ Add this line (to check if your Neon DB URL loads correctly)
+console.log("DATABASE_URL from env:", process.env.DATABASE_URL);
+
 const app = express();
 
 if (process.env.NODE_ENV === "production") job.start();
