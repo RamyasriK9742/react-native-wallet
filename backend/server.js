@@ -32,8 +32,13 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/transactions", transactionsRoute);
 
-initDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("Server is up and running on PORT:", PORT);
+initDB()
+  .then(() => {
+    console.log("✅ Database connected successfully");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is up and running on PORT: ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("❌ Failed to initialize database:", error);
   });
-});
